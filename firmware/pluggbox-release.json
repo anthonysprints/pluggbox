@@ -1,0 +1,10 @@
+{
+  "family": "pluggbox",
+  "firmware_sha256": "f96107389c9657053c4e0d1564ff3669311ee7317453a805f2b2f4fa97c08cde",
+  "hardware_validated": false,
+  "install_available": true,
+  "manifest_sha256": "2f991a3543c0022e37bfe4fa310975d7317c03141fed9a47fda97b19c7038061",
+  "schema_version": 1,
+  "status": "experimental",
+  "version": "0.1.0-proto"
+}

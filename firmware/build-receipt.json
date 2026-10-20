@@ -1,0 +1,621 @@
+{
+  "artifacts": {
+    "felucca.bin": {
+      "sha256": "5ef626640568f35f4f84726b6ef04a52c16228e0ba73f4639b6aab120fe44208",
+      "size_bytes": 562928
+    },
+    "felucca.elf": {
+      "sha256": "a464f36ee32593fa12f012c7cceabf3a6cff8dea7ed851a500fb951fbf3ac393",
+      "size_bytes": 602532
+    },
+    "felucca.fwsc": {
+      "sha256": "f96107389c9657053c4e0d1564ff3669311ee7317453a805f2b2f4fa97c08cde",
+      "size_bytes": 611259
+    },
+    "loader/loader.bin": {
+      "sha256": "3ca8c59bbad80020593decd9618ceda6db80076d517e523791fe24ee04d27907",
+      "size_bytes": 9372
+    },
+    "loader/loader.elf": {
+      "sha256": "a79e72be87824378dc25b5b69896ee3356c1037bdd2707d875479ae570dc478e",
+      "size_bytes": 11840
+    },
+    "loader/ota.bin": {
+      "sha256": "140a8c5df78648b8540671da56563df5494f858341c57e17007dfe14977a0d9e",
+      "size_bytes": 8103
+    }
+  },
+  "commands": [
+    {
+      "args": [
+        "--gc-sections",
+        "-e",
+        "_start",
+        "-T",
+        "firmware/loader/loader.ld",
+        "build/loader/crt0_ldr.o",
+        "build/loader/loader.o",
+        "-o",
+        "build/loader/loader.elf"
+      ],
+      "tool": "pi32v2/bin/ld"
+    },
+    {
+      "args": [
+        "-O",
+        "binary",
+        "-j",
+        ".data",
+        "build/felucca.elf",
+        "build/data.bin"
+      ],
+      "tool": "common/bin/objcopy"
+    },
+    {
+      "args": [
+        "-O",
+        "binary",
+        "-j",
+        ".ram_text",
+        "build/felucca.elf",
+        "build/ramtext.bin"
+      ],
+      "tool": "common/bin/objcopy"
+    },
+    {
+      "args": [
+        "-O",
+        "binary",
+        "-j",
+        ".text",
+        "build/felucca.elf",
+        "build/text.bin"
+      ],
+      "tool": "common/bin/objcopy"
+    },
+    {
+      "args": [
+        "-O",
+        "binary",
+        "-j",
+        ".text",
+        "build/loader/loader.elf",
+        "build/loader/loader.bin"
+      ],
+      "tool": "common/bin/objcopy"
+    },
+    {
+      "args": [
+        "-T",
+        "firmware/app.ld",
+        "build/crt0.o",
+        "build/fm1_vec.o",
+        "build/fm1_isr.o",
+        "build/felucca.o",
+        "-o",
+        "build/felucca.elf"
+      ],
+      "tool": "pi32v2/bin/ld"
+    },
+    {
+      "args": [
+        "-d",
+        "-j",
+        ".ram_text",
+        "build/felucca.elf"
+      ],
+      "tool": "common/bin/objdump"
+    },
+    {
+      "args": [
+        "-d",
+        "build/felucca.elf"
+      ],
+      "tool": "common/bin/objdump"
+    },
+    {
+      "args": [
+        "-d",
+        "build/loader/loader.elf"
+      ],
+      "tool": "common/bin/objdump"
+    },
+    {
+      "args": [
+        "-h",
+        "build/loader/loader.elf"
+      ],
+      "tool": "common/bin/objdump"
+    },
+    {
+      "args": [
+        "-t",
+        "build/felucca.elf"
+      ],
+      "tool": "common/bin/objdump"
+    },
+    {
+      "args": [
+        "-t",
+        "build/loader/loader.elf"
+      ],
+      "tool": "common/bin/objdump"
+    },
+    {
+      "args": [
+        "-target",
+        "pi32v2",
+        "-MMD",
+        "-MF",
+        "build/crt0.d",
+        "-c",
+        "firmware/crt0.S",
+        "-o",
+        "build/crt0.o"
+      ],
+      "tool": "pi32v2/bin/clang"
+    },
+    {
+      "args": [
+        "-target",
+        "pi32v2",
+        "-MMD",
+        "-MF",
+        "build/fm1_isr.d",
+        "-c",
+        "firmware/hal/fm1_isr.S",
+        "-o",
+        "build/fm1_isr.o"
+      ],
+      "tool": "pi32v2/bin/clang"
+    },
+    {
+      "args": [
+        "-target",
+        "pi32v2",
+        "-MMD",
+        "-MF",
+        "build/fm1_vec.d",
+        "-c",
+        "firmware/hal/fm1_vec.S",
+        "-o",
+        "build/fm1_vec.o"
+      ],
+      "tool": "pi32v2/bin/clang"
+    },
+    {
+      "args": [
+        "-target",
+        "pi32v2",
+        "-MMD",
+        "-MF",
+        "build/loader/crt0_ldr.d",
+        "-c",
+        "firmware/loader/crt0_ldr.S",
+        "-o",
+        "build/loader/crt0_ldr.o"
+      ],
+      "tool": "pi32v2/bin/clang"
+    },
+    {
+      "args": [
+        "-target",
+        "pi32v2",
+        "-Os",
+        "-ffunction-sections",
+        "-fno-builtin",
+        "-Wall",
+        "-Wno-unused-function",
+        "-Ifirmware/hal",
+        "-Ifirmware/src",
+        "-DJAMBOX_PROTO=1",
+        "-DPLUGGBOX_PROTO=1",
+        "-E",
+        "-P",
+        "build/loader-configuration.c"
+      ],
+      "tool": "pi32v2/bin/clang"
+    },
+    {
+      "args": [
+        "-target",
+        "pi32v2",
+        "-Os",
+        "-ffunction-sections",
+        "-fno-builtin",
+        "-Wall",
+        "-Wno-unused-function",
+        "-Ifirmware/hal",
+        "-Ifirmware/src",
+        "-DJAMBOX_PROTO=1",
+        "-DPLUGGBOX_PROTO=1",
+        "-MMD",
+        "-MF",
+        "build/loader/loader.d",
+        "-c",
+        "firmware/loader/loader.c",
+        "-o",
+        "build/loader/loader.o"
+      ],
+      "tool": "pi32v2/bin/clang"
+    },
+    {
+      "args": [
+        "-target",
+        "pi32v2",
+        "-Os",
+        "-ffunction-sections",
+        "-fno-builtin",
+        "-Wall",
+        "-Wno-unused-function",
+        "-Ifirmware/hal",
+        "-Ifirmware/src",
+        "-Ibuild/gen",
+        "-DFELUCCA_FLASH=1",
+        "-DFELUCCA_PERSIST=0",
+        "-DFELUCCA_OTA=1",
+        "-DFELUCCA_OTA_DRYRUN=0",
+        "-DFELUCCA_OTA_RAMONLY=0",
+        "-DFELUCCA_ICONS=0",
+        "-DFELUCCA_SLICE=0",
+        "-DJAMBOX_PROTO=1",
+        "-DJAMBOX_RECOVERY=0",
+        "-DPLUGGBOX_PROTO=1",
+        "-DFELUCCA_ID=\"FM-1_701\"",
+        "-DFELUCCA_VERSION=\"Pluggbox 0.1.0-proto\"",
+        "-E",
+        "-P",
+        "build/app-configuration.c"
+      ],
+      "tool": "pi32v2/bin/clang"
+    },
+    {
+      "args": [
+        "-target",
+        "pi32v2",
+        "-Os",
+        "-ffunction-sections",
+        "-fno-builtin",
+        "-Wall",
+        "-Wno-unused-function",
+        "-Ifirmware/hal",
+        "-Ifirmware/src",
+        "-Ibuild/gen",
+        "-DFELUCCA_FLASH=1",
+        "-DFELUCCA_PERSIST=0",
+        "-DFELUCCA_OTA=1",
+        "-DFELUCCA_OTA_DRYRUN=0",
+        "-DFELUCCA_OTA_RAMONLY=0",
+        "-DFELUCCA_ICONS=0",
+        "-DFELUCCA_SLICE=0",
+        "-DJAMBOX_PROTO=1",
+        "-DJAMBOX_RECOVERY=0",
+        "-DPLUGGBOX_PROTO=1",
+        "-DFELUCCA_ID=\"FM-1_701\"",
+        "-DFELUCCA_VERSION=\"Pluggbox 0.1.0-proto\"",
+        "-MMD",
+        "-MF",
+        "build/app.d",
+        "-c",
+        "firmware/src/felucca.c",
+        "-o",
+        "build/felucca.o"
+      ],
+      "tool": "pi32v2/bin/clang"
+    },
+    {
+      "args": [
+        "tools/gen_drumkits.py",
+        "build/gen/felucca_drumkits.h"
+      ],
+      "tool": "python3"
+    },
+    {
+      "args": [
+        "tools/gen_fm6_patches.py",
+        "build/gen/felucca_fm6.h"
+      ],
+      "tool": "python3"
+    },
+    {
+      "args": [
+        "tools/gen_font.py",
+        "build/gen/felucca_font.h"
+      ],
+      "tool": "python3"
+    },
+    {
+      "args": [
+        "tools/gen_icons.py",
+        "build/gen/felucca_icons.h",
+        "build/gen/jambox-icon-metadata"
+      ],
+      "tool": "python3"
+    },
+    {
+      "args": [
+        "tools/gen_pluggbox_drums.py",
+        "build/gen/pluggbox_drums.h"
+      ],
+      "tool": "python3"
+    },
+    {
+      "args": [
+        "tools/gen_samples.py",
+        "build/gen/felucca_samples.h"
+      ],
+      "tool": "python3"
+    },
+    {
+      "args": [
+        "tools/gen_tables.py",
+        "build/gen/felucca_tables.h"
+      ],
+      "tool": "python3"
+    }
+  ],
+  "configuration": {
+    "app": {
+      "flags": {
+        "FELUCCA_CDC": 1,
+        "FELUCCA_FLASH": 1,
+        "FELUCCA_ICONS": 0,
+        "FELUCCA_OTA": 1,
+        "FELUCCA_OTA_DRYRUN": 0,
+        "FELUCCA_OTA_RAMONLY": 0,
+        "FELUCCA_PERSIST": 0,
+        "FELUCCA_SLICE": 0,
+        "FELUCCA_UART": 1,
+        "JAMBOX_PROTO": 1,
+        "JAMBOX_RECOVERY": 0,
+        "PLUGGBOX_PROTO": 1
+      },
+      "identity": "FM-1_701",
+      "version": "Pluggbox 0.1.0-proto"
+    },
+    "loader": {
+      "flags": {
+        "FELUCCA_CDC": 0,
+        "FELUCCA_FLASH": 0,
+        "FELUCCA_ICONS": 0,
+        "FELUCCA_OTA": 1,
+        "FELUCCA_OTA_DRYRUN": 0,
+        "FELUCCA_OTA_RAMONLY": 0,
+        "FELUCCA_PERSIST": 0,
+        "FELUCCA_SLICE": 0,
+        "FELUCCA_UART": 0,
+        "JAMBOX_PROTO": 1,
+        "JAMBOX_RECOVERY": 0,
+        "PLUGGBOX_PROTO": 1
+      },
+      "identity": "ota-FM-1_701"
+    },
+    "package_identity": "FM-1_701"
+  },
+  "generated_inputs_sha256": {
+    "build/gen/felucca_drumkits.h": "3d6d07b4c47330aaa7dad53f187495aa4d46575ade0f8d0003404c6b125d63a0",
+    "build/gen/felucca_fm6.h": "d1859b8194443ecbe099505909d6ea4db866d919100c81d738bb06d56004f791",
+    "build/gen/felucca_font.h": "e365e761aefe2a33b2832ed69cd35a02ac661d6f8bfb52fc3071e653cd5aae02",
+    "build/gen/felucca_icons.h": "66e173257ccbac22ac1c3c51c8692a219b1dfdf9c2111a9d0e84434551e5c60b",
+    "build/gen/felucca_samples.h": "b7e249b581848a25cadb76951d08bb1003d83781d74f627f3f5a0e8ffadcc1e1",
+    "build/gen/felucca_tables.h": "28f7783cd74c6d9e6dbcd21913030e199ffa8ba5f5a24689da406c2c51bc40b1",
+    "build/gen/pluggbox_drums.h": "0c93dcc3f1d9ce7d6ce96c61dbb2ac224cc5528fcda2a67a7236e7cd676105ad"
+  },
+  "inputs_sha256": {
+    "assets/fonts/Terminus-LICENSE.txt": "10badc64d36b6d6fb1a27fa6e58dfc18475e3bd5412d9f42fca7cae08efcc289",
+    "assets/fonts/ter-u16b.bdf": "5275653e1cae7b123c844e52d5232242e054d5a4b0d30906404b78718c2380df",
+    "assets/icons.json": "1165194730f97e22e9c1f11d9585d52cba3080b6ee8464ddba5ae3a79fb61d7f",
+    "assets/samples-cc0/ATTRIBUTION.txt": "81461e108313ef6fbda38fefc3851685d68db4b5397647536a4f6c9f58031118",
+    "assets/samples-cc0/BASS/00_E1_m52.wav": "f0c8eb8b038551a20921df7e73c33819381a05293200bdda281524d26577c08f",
+    "assets/samples-cc0/BASS/01_B1_m59.wav": "34c5ddd0e366de685d063092bf036c210d5c98b92ec5b49fde683d3354858a09",
+    "assets/samples-cc0/BASS/02_Fs2_m66.wav": "fabba020333ff9497566bca9458abe9e092166e506cb2e69e24d5e43cbdd28ef",
+    "assets/samples-cc0/BASS/03_Cs3_m73.wav": "30c056dbd57c6cf9a0eb08a3785a2ef73ef7ace55a0701fbb60d04f3af3a82a5",
+    "assets/samples-cc0/CREDITS.txt": "8d54ace4773911b596a2a9421af1e4fcec5cd0ca3396ac3511c2c839f582e2bf",
+    "assets/samples-cc0/FLUTE/00_LDFlute_susvib_C4_v1_1.wav": "37fd620f41b3ef8eb96bd0b1d2d4660266e61b4720b8f00d16b1be7886673568",
+    "assets/samples-cc0/FLUTE/01_LDFlute_susvib_C5_v1_1.wav": "f80ea0857ba925e1d491499a3742c31d45cee45371041ecb9bd64b2167343d59",
+    "assets/samples-cc0/FLUTE/02_LDFlute_susvib_C6_v1_1.wav": "8b8a1b59010358607edf2daaa68e4916206c9e1f341be32d1e70ca85d35bb729",
+    "assets/samples-cc0/HORNS/00_G3_m55.wav": "e9548b0987bb5387cb4f30de639a46d0248a20d7b51afc87ca5d513f96cf9745",
+    "assets/samples-cc0/HORNS/01_D4_m62.wav": "dd596c63da9f3bfd82d83ac66356305877a09b6e4d45c5500362257335f07944",
+    "assets/samples-cc0/HORNS/02_A4_m69.wav": "34171fca7be39d4612ebaa8ca99b0c81fc8443ec250c5b25c8013a072699f01b",
+    "assets/samples-cc0/HORNS/03_E5_m76.wav": "092f102f9ba3ccb9547f8ed24fcbbf46949b82f0d4c98aca1bb46b57239bc825",
+    "assets/samples-cc0/KIT/00_Tamb1_Hit_v2_rr1_Mid.wav": "885ebf1d70f8e888f576682e4e4112b92b69649162f392c83b3379c91a09cf41",
+    "assets/samples-cc0/KIT/01_Mid_ShakerDouble_Down_rr1.wav": "0df7c271e1dba4de7304f7df81886390dd9ae698bfdd6df570026af4f2223574",
+    "assets/samples-cc0/KIT/02_Conga_HitN_v2_rr1_Sum.wav": "13d322c0e7a830cdbcbdc5a6e05566dfe3f5a073b7b82a3262d3f6fc10f96764",
+    "assets/samples-cc0/KIT/03_Claves1_Hit_v2_rr1_Mid.wav": "bcabe27330761309eb4b4f6207e6e3b4be59815df86449ac05bfb9b81f19efc9",
+    "assets/samples-cc0/KIT/04_wood_click_mp.wav": "00b76f9fe96c118f29dfc69866c12ec11f2e1264f6cb9c0b36912c2210b015fe",
+    "assets/samples-cc0/KIT/10_kick_BDrumNew_hit_v5.wav": "30899ee9abb74d3de160a5a386e365af7ac4f0e10d67288498bf4e009e0996e2",
+    "assets/samples-cc0/KIT/11_snare_Snare2_HitSN_v7.wav": "8cdcf5d377f9111d083222b12964fb7c342db4ce3ea0b2d9a53d38df0053c438",
+    "assets/samples-cc0/KIT/12_rim_sidestick.wav": "c0b40782bdcdb88dfbccf1b5678dc4e727d4711321a7e6071a04459c131f5576",
+    "assets/samples-cc0/KIT/13_clap_Clap_rr1.wav": "28e686093a684a511a0800a5517a1ecc64c565384910b19dee9aabc16f639c51",
+    "assets/samples-cc0/KIT/14_hihat_HitC_v3.wav": "b0ae1d1382d09efa59f0db3e918161a3b2e5876e4bc93877ced672022717309e",
+    "assets/samples-cc0/KIT/15_ohat_HitO.wav": "84653794da15a74f19c4e89e632c39bfe4b204914e6b8ff68c6d7100838088a3",
+    "assets/samples-cc0/KIT/16_tomlo_TomL_HitS_v4.wav": "9abacf78a1c981c17bc099a27cf9dafd11cd65e43d41ab1e910443911add93ca",
+    "assets/samples-cc0/KIT/17_tomhi_TomH_HitS_v4.wav": "86f343debdc08c0d55f3e6049a4e0cf38fd278ca9b3dc481208f9343bfeb73e6",
+    "assets/samples-cc0/KIT/18_crash_susCymb2_hit_f1.wav": "4de6cbead96c52d09bcac8eef65464d9691a181852272549b66c149b77f8c6b7",
+    "assets/samples-cc0/KIT/19_ride_susCymb2_stick_mf1.wav": "0439c99230db9e0333ced23054a684f76be8e1fdce5cff265cee73fd85ffb1a7",
+    "assets/samples-cc0/KIT/20_cowbell_Cowbell1_Normal_v3.wav": "8d329ba772b0d6be4f11166585a7e2d98472fd13611a3eaee2830ebeebadb3e7",
+    "assets/samples-cc0/PIANO/00_C3_m48.wav": "6ff54a939dafc21ab2b2ab61254a759f19a5339f6688afaa151d66534edc0e83",
+    "assets/samples-cc0/PIANO/01_Gs3_m56.wav": "2dd456e9f18524d3c8de35e31a0bc75b9747f2935387e3bdefc2dfe691fedb05",
+    "assets/samples-cc0/PIANO/02_E4_m64.wav": "2fe14ee86f68c55859d63cb5a0798caf40b9f48324f7549d3633949b90c38645",
+    "assets/samples-cc0/PIANO/03_C5_m72.wav": "0fe703351fb7f137852c63bd2e584002f8387bf63d76adf26b0a3be41db3c688",
+    "assets/samples-cc0/SCRCH/00_vinyl_scratch_m57.wav": "b334a2ec40c2b02011f01edc452354adaf4ded06e2f2fea52d95a83886b9d7c5",
+    "assets/samples-cc0/SCRCH/01_vinyl_backspin_m65.wav": "4cf743d65a730511c00ace97ff0973c4024abb8a6a4ee6d1cf9777a2a1dbdb6c",
+    "assets/samples-cc0/SCRCH/02_vinyl_rewind_m72.wav": "997f50f8f7026c30f10cea12c31788c7c448523eaa912d08c13ae738881da14a",
+    "assets/samples-cc0/STRGS/00_G3_m55.wav": "ce4b154381540b3649fedf785887b575690b8c0fb1ea4efccccfa6e8ffe094b0",
+    "assets/samples-cc0/STRGS/01_E4_m64.wav": "c5e8b721775acd151f297ea217405b228039ac566829cdeaf920c58d60c68a8b",
+    "assets/samples-cc0/STRGS/02_Cs5_m73.wav": "fec934f346d3f010ea385949a01db53686f7c7e69425d646ae54284348ef7c89",
+    "assets/samples-cc0/VIBES/00_F3_m53.wav": "69042386a65b343f7372b2daa9ae8d6bdcfc7a37de3c28a56fa006fab06ffaef",
+    "assets/samples-cc0/VIBES/01_D4_m62.wav": "6364def55b970cea52b20f45d15fd4c460c58f7b6d948319e2248c8215f5b014",
+    "assets/samples-cc0/VIBES/02_B4_m71.wav": "f75edb9f3654e43a81fdce81ab46625b76cac21a0016ea186222125fc66ba263",
+    "build.sh": "8e3f9c9b0e22689e93c4812e6ec29312f0c2c0331795fe41e0d2a4b7eac3a05a",
+    "firmware/app.ld": "6a9f41205e482fbdf2d24dc418416e45a3a8e1781d3e594279d751335af8942a",
+    "firmware/crt0.S": "2212471c4a70e94022ba24ef65a4b208fadd5f7e33f80745c5f5e8b9f4aa840c",
+    "firmware/hal/fm1_adc.h": "1917870bd802de9134d33335efbcf886b296705dff06688925fd7325589c0c1a",
+    "firmware/hal/fm1_audio.h": "22351440699748546e932098e3016c618d6137dd0ae34557e08a107641d4e62e",
+    "firmware/hal/fm1_cc.h": "46c533a0926ba9298ae36705f857ed609a61b95511ba7f0d1800857b4760dd73",
+    "firmware/hal/fm1_flash.h": "2b9548436156f3e8d2611ea5d853083ea59b06e878b9a931257ced0645ea9c6a",
+    "firmware/hal/fm1_flash_ranges.h": "c6d50f0a73a5b782a37ea917c10e94192ae4977340845ffe16048b1f1ad9eb51",
+    "firmware/hal/fm1_gpio.h": "5e3937e32a3b4b9b9ae622c5b42c8819ec8a16f2d76dbddec91654703c77a216",
+    "firmware/hal/fm1_guard.h": "dda2ebdd3024aab7700f8ef00cc55de23c0b369be1d889741d2058eb5c33ce74",
+    "firmware/hal/fm1_input.h": "7579aa8e061e4b23a86aee693f1d6004dc552b888457ea507f1ba3d941465241",
+    "firmware/hal/fm1_irq.h": "65162104f4d2461e777b8ad60b4291906240f465f9799d27b5ab7b7d7f7cc9f6",
+    "firmware/hal/fm1_isr.S": "5e45c960577354184efa3bf984a1c14bffb0c5967cbdb643e1f4c9cc196105c5",
+    "firmware/hal/fm1_lcd_hw.h": "4fc3318a703fd55200153442acac4eb33ef56ff8e2eb82ba18ed0a3b9e655c1e",
+    "firmware/hal/fm1_sys.h": "5d56781274406b0a1bf816c66d86c0b0b23b49757cc6f5644df566127827a9a7",
+    "firmware/hal/fm1_time.h": "e83c725eae2ec5a163771ca2b8f1c0779354456f2e20a32febc7b6755758a97d",
+    "firmware/hal/fm1_timer.h": "1ec236ce4a75a5b94b9c16999dcdf7d71e4e0c5e0d2f14dbfb87bbaf025e1004",
+    "firmware/hal/fm1_uart.h": "482da9e67231a7b42bff63362dec60aa8f43ca6e8d4962df57f8be6f9ea5d8c9",
+    "firmware/hal/fm1_usb.h": "667289a678a027221343b6496b61870222eb80394a696d7dd896dbc2ffe303d4",
+    "firmware/hal/fm1_vec.S": "8f9e787871332f522157d561dc3cfe8906ed0abf160139ed5819cfdeab66f01a",
+    "firmware/hal/fm1_xip.h": "dcba6ddb9cd2403e1d97c4db49d836110ef2805d2369db7ed323e3fbe26c56ed",
+    "firmware/loader/crt0_ldr.S": "bd4149b97520d1dcc271f730c5a046b0dbf97909e48e968e0ba18304ffc37841",
+    "firmware/loader/ldr_core.c": "6dd6608d0b1b33dc5768b7fe8c25e82776107a2eeed7d65c653d08ae0d513575",
+    "firmware/loader/loader.c": "6109bd578bccca35150e3b022f8dfc74353c25d8c416b7332d1f4029d1f56143",
+    "firmware/loader/loader.ld": "4acae8c9a16cf9a70f53a546f9175b5a86d2bc5cb6bce39513a2ff3c4fdba4ae",
+    "firmware/src/app_policy.h": "8b7650e6dd9bca4c0c9624b2082742eaba324974bcbbbee5542093a05960c4fa",
+    "firmware/src/arranger.c": "7d3c6cf7efdc660182f2c0906bf5211925ccfaf9143e1828b910fc1ef7edbd83",
+    "firmware/src/arranger.h": "56f1c7575cb44e8c200f0216c34f47ce39dd8f0029cd8ab14fd36364ff9f588f",
+    "firmware/src/arranger_scene.c": "7ab1457b16486aae1133fd747b890e37b2101227ce1c9c71b20095d7e6b72151",
+    "firmware/src/audio.c": "02560fb1cc4c9b2ac7b41f83a624e86784952f094be7d07c552f053cc24e952f",
+    "firmware/src/bootguard.h": "bf19ef423356552105115a3ec3dde3beddb0369670f4b4317520ebfd8f032afb",
+    "firmware/src/console.c": "95d3ee19ebae3038afccc61d69fb05f6d540472d27daf1070f78d8b48c273a2f",
+    "firmware/src/core.h": "f2aec2c2eb8284f916b48f58397fbbf45d7c05df00ff071529a6b06dd461344c",
+    "firmware/src/drum_synth.c": "6ff15d2820c1f4103f42dd56e89a66dddd7260ad7adc846df53f443b0946031a",
+    "firmware/src/drums.c": "fe0952d82bbc154e98aa9321b5f774af5b6c8bb16ec8616c865761075282f8c5",
+    "firmware/src/dsp.c": "927a3aa07d4f4b96daefdc8ad843452478f673e2b306f232ca86d3235ebdc1f0",
+    "firmware/src/editor.c": "e5b795841c1fa94abd6e31d765bf1136aeeb1f7eb7210d467e12a8111e9a88a6",
+    "firmware/src/editor_dsyn.c": "5392ffe9a8af94a360208e55298ce71a76e78a70ac36c8d81e009ef14d8d9692",
+    "firmware/src/editor_fm6.c": "d38967218b6697dd1d1c6735e4006ca6fc7ec1b262a74ec1095e51005093dd1e",
+    "firmware/src/eng_analog.c": "929ac03333ee1bfb1c6a23ccd9812b02e44fb9bdbce244545c04de864b69aeff",
+    "firmware/src/eng_digital.c": "01931e1acba15cbdfeb89fa2bdba3b94e09d6cc6f1661da59b1cf9db10d379f8",
+    "firmware/src/eng_drawbar.c": "08b544972e15edf758a1ddd4917297778fbcab8f8073c569bf62903b9345f2ef",
+    "firmware/src/eng_fm6.c": "022ff122d3e9a574f62ccb0678fe7d558a6fa59740f8500671a91be97cafb0a1",
+    "firmware/src/eng_formant.c": "6fa744c6a9cf1acd6f7bd793a5302c0557d950432d07f245f682ec12b2892bb6",
+    "firmware/src/eng_grain.c": "928ab2a1deaa296ae032cf48d339a8bc82dc20ff1e40329ec328d9e0934e3091",
+    "firmware/src/eng_lofi.c": "5dab4001d2119af13d616a2f2a44a7e619b9080d3fbbe1c9b736d488f62e988d",
+    "firmware/src/eng_noise.c": "86d38abb129cccfba7ae40a39c66d5a6a7b29e0f30a3b0cfde649d40de24b101",
+    "firmware/src/eng_phase.c": "17efa7f6d0b24cfad33dc96973b741a1b831cba3fed0ce9aaa1cac9d28395ea9",
+    "firmware/src/eng_phys.c": "ee1977cd4c5978a31a4c7e475d07f06fdfa22d5755f32bd94331523233df28fd",
+    "firmware/src/eng_sample.c": "29a278bd944537cd0a890588e91f3daa25bef156a19cb1d28856d1966aead9b9",
+    "firmware/src/eng_trio.c": "d9921dd19381cf1fad2c800716a662ee5ecabe885ace7b9b44ea8ba97e3fa518",
+    "firmware/src/engines.c": "df204fa4842ef0ff018f3a515aa51b0dd09dfbef81d3dd357b7302468be23673",
+    "firmware/src/felucca.c": "9cb067f4090f97721617894eb657f3e7975070df30fc4abf16ce555803df52ce",
+    "firmware/src/flash_access.c": "a7c3800c872ac28ddb113d7629f4cfa47adcfe2c83f824eb4085ebbc5644501b",
+    "firmware/src/fm6_core.c": "d2851cd7ce04cf1bae7f6fa3a80ffe860000e9c0188c7cff8916b1fc07c2e18c",
+    "firmware/src/fx.c": "ee9bdd28054af261c7a75e5fec570a5ec24002841e2c462c5fa311a96dde2c69",
+    "firmware/src/gfx.c": "cbdd00534b5c602ce6a95697fe197d6643dfb1321ac52a24e0b5764a62d54bfe",
+    "firmware/src/icons.c": "cf3b1facde757aded10101df74de52e06be66dbc3cbfbe89dfc6208f1f517795",
+    "firmware/src/instrument_init.c": "120753653f519e76141432ceb9acae749fd67a0a5c4bc22f88f5c82224afcbda",
+    "firmware/src/jam_calibration.h": "c5ae507d2edbe87dcec03db5d743bf26faa25cf265e41464e93cac17e29ec451",
+    "firmware/src/jam_duration_play.c": "6570014d89c3f71d87041e0d37fe065f0eafe3a329171d9a4edd0ff8e5e3b66f",
+    "firmware/src/jam_duration_record.c": "1c3e6719bc6879e5e1f89c9994ed5827130ea2c7754571eca6d493eb4b596ced",
+    "firmware/src/jam_identity.h": "53e476fff22c6988e884aa83f2ad6d58524485741346f79363ffd622900cc8ce",
+    "firmware/src/jam_recovery_api.h": "e22f0cf4d4528dc1e8e1cd62a7feef2c27a23c4ea1c7f53d63494c602450232a",
+    "firmware/src/jam_recovery_runtime.c": "e8b269f1d8186ff97d9bc86b684858fa6bd432c33029c6ea8f5944c03f384329",
+    "firmware/src/jam_ui.c": "b58c39b560be90444337d6e85da314e314937e9b9d3d8173211f5befeff3a084",
+    "firmware/src/lcd.c": "b69f0c3d6a5b61c883a35b50ddd6582811bd620a45268543e923fb8849caaac4",
+    "firmware/src/libc.c": "344b09afe33da826feefeb1ea2a1a7c50732f91c133fee30174819645edc131a",
+    "firmware/src/main.c": "93a7645e41e7c4da73d49bb317825f92032727b106181e48c1fd2411d0c8c900",
+    "firmware/src/midi_uart.c": "7a87da4a1c3fe103cbda65d13977af9385dffa1997bb1a752a0ae6d6d46c380f",
+    "firmware/src/ota.c": "dd9c7891e6cf43041ffb14cde34ee81f003de4e678b58e67c5b6ec4faa4fe5a9",
+    "firmware/src/ota_flash_access.c": "83c16477c95e64e47f1e08cb70cb6551bb6bc2dc9e914679add8dd05d78b757c",
+    "firmware/src/panel.c": "9b508565ca2ffe596e3a1b4533eef5f7e9659ab71ca777688aec72e523164633",
+    "firmware/src/params.c": "5b68b3f790d857f71b2ea223075ee3aab5bbe2e73e8613d67106054b9ffd00c4",
+    "firmware/src/phys_dsp.c": "5d39a4037b7686001189360a098edea64ff70aa2d9099ea1a448c792ae003e7c",
+    "firmware/src/phys_symp.c": "75408d329c2b39a0a2a52833f9e5875b7da2c4bd9d87bd9fc146895844788a47",
+    "firmware/src/plugg_identity.h": "4d450ff18cc717563253213d7663a71293ef43401f66122786a06fc760229e38",
+    "firmware/src/plugg_palette.c": "97555d95d916db56eb2d0d3f53572460ebb35e3d41dd8f805bb8e89403e6ba87",
+    "firmware/src/preset_trim.h": "84557efefd5479d383c731ff51a03547a81a78a784798e9acf96ea18979342db",
+    "firmware/src/project.c": "2a2e55ba4b48257b7e2068a47dc321e6343bdaf0c955542c5701ae147cbf76f1",
+    "firmware/src/punch.c": "3a32ea8fd8aadadb1eca3becafbd599ba79b668c1b7ad0b2a81111bfd3eccd0f",
+    "firmware/src/recovery.c": "70c7049a946d50c5573a2d1360ad9e77b7ea4a93bfda27077efce0db0fc28a71",
+    "firmware/src/seq.c": "5aa48578ecfbfaf94bee480c2a17b74848cbc27a1d296933cff4a9294ac1cd30",
+    "firmware/src/slicer.c": "ceaefa1de87b143a8ea64d2916d52b2cbce31fd5fc548f128cd18670724409db",
+    "firmware/src/splash.c": "23a3786b91eb1da56bf0091cfb311d09a8356830e1aa26efb5b068e91cb4e6d5",
+    "firmware/src/storage.c": "e06fe82bb9cc303ba24bb694729e368c3cda4897eafd2873045bec1954d0de5a",
+    "firmware/src/uac_fir.h": "b4393a8efc4ce5427334692b9857d31446a36416dc6ca7941aea5bd4add4ca56",
+    "firmware/src/ui.c": "fc2c0f10a5ecc95ca1e2cfa73be0a6d49f37a942e129763d36b9a5a3e268d616",
+    "firmware/src/ui_draw.c": "304d833f2aed88c3a547a568aea2915a0177f34b1ecbe8a560dfa33d7212a448",
+    "firmware/src/ui_drum_sound.c": "c132502e8efd4aef676bbbd784d286d86ae0fca620975eec398062208c2169e5",
+    "firmware/src/ui_input.c": "397a7036f520cd4e4b80719fb0e2709ce5a0c4b1668104a6cdb2a2d0ca2b3487",
+    "firmware/src/ui_layers.c": "ccc61b632ac7fa56e308ba5fe17ee429220036587848e0a649b92fe63f490a29",
+    "firmware/src/ui_menu.c": "926dc2024bc0e5737ce81508e7eb011588a5de18d39d8986a204d8dec048b65c",
+    "firmware/src/ui_song.c": "53fafd8ca8bda2c0ee8ecf37be2e51e60e2a3b991070feeb90b8dd025f529d3e",
+    "firmware/src/ui_studio.c": "5b6e27d46cb95cb7f1e9d4331616939bc1eb8372dc00ee9cd32f6016aeb4f88c",
+    "firmware/src/ui_vis.c": "aab57d452245a1a758c660ff270de42db1ebd6ce7e3876c2f96ffaaf0a995049",
+    "firmware/src/upreset.c": "873970da0a924727da63182f458c0dc22e758b8f065c8a13d596887ffcddbcbf",
+    "firmware/src/usb.c": "50afa91200b28ba17537c4ea6a10bbb7d4a925c6dbdc8512e5f7441c2986dd2a",
+    "firmware/src/voice.c": "136b1590f2690b77f60d9d27f9997bc8bfd9f86b904564a4da5c442207e52ba8",
+    "tools/build.py": "db686a79f027c3ce1b72c8626cd4c56d72078c462a4f340200bb8a82559f0902",
+    "tools/build_pluggbox_device.py": "31169067c1604f78d200377cf5badc9cdc5be2c6923042bf75bdbd9975b0d470",
+    "tools/cloud/build_device.sh": "f04365fadbe710e01dd365110d8e464593e51ab1617b238f8c90fa2ae3712140",
+    "tools/cloud/build_pluggbox_device.sh": "8c8a7a8a424a2ed008452bf1618001a17a2e443aa4383ea404b4e4425924f63a",
+    "tools/cloud/prepare_sdk.py": "8426c61e59c019fdd4c8f56f23c1ba3d4b421dd1e74501b2212d1d58767bd8e7",
+    "tools/cloud/prepare_toolchain.py": "a86bedbec2f4429dc7a7a5f912a645b11780976c2c54152c9dfb8d4ec7cb8d2f",
+    "tools/cloud/setup_pluggbox_device.sh": "29a828512d6bf1d35b0328a53a83a1fd8b34ebef705e373ea1bee43b7c1d21ff",
+    "tools/device_build_receipt.py": "a2b9a287407197ca81a53609d45f69b79157770173093ffb33fa35e4ecb33ebd",
+    "tools/drumkit_levels.json": "26606c5f046c94cc6228c6dd30bfc334706b88e9102689b49ff9b34d61db6d45",
+    "tools/fm1pkg_make.py": "284fa4553d3194d6c374b7cb3ff169ac11a5d3f496861ed17f7bae28e79d7ea3",
+    "tools/gen_drumkits.py": "c4c1fd65761242d3670e03eed9ebdc83530d94e1995a075fe1cf5e52c872a2ed",
+    "tools/gen_fm6_patches.py": "409a2f98dd5adc5b3efc6ebf5571a80179c6fcbd3610efea66508bd0cfe6a787",
+    "tools/gen_font.py": "d5127c268eaf4a9f12dff53d64f49543a53b7ff054aafd053b14e439168f85c5",
+    "tools/gen_icons.py": "265ac900b9174347952de70f1c065386199f47880184e0a2fc03a7890d5bbc33",
+    "tools/gen_pluggbox_drums.py": "bac387a6ebc7fd61ab444fea6e2c389933f06daafdca0380611e3748e66e3309",
+    "tools/gen_samples.py": "aa8564d79f78471f399b402772cfaaeed398092368a44489c1add439a3326cb5",
+    "tools/gen_tables.py": "abfa75250c7f7f6cdd75ccbe8aadd4a63f92279e0e921fe39bd1206f082fcef5",
+    "tools/gen_waves.py": "d574048795c3e3824bdf367e952b855fdad568efc28c55d42029ece9dd46d0fe",
+    "tools/lz4blk.py": "bede501ca8774ba6942b35ad2c43823e9f48f13d0fb001ef9b73cdaf41460e16",
+    "tools/plugg_device_build_receipt.py": "d3b63dbc71f5c21e2287c32410f5c0d45202f522056305f02beca330c80c98f0",
+    "tools/sampleio.py": "b4500741f30e42ee4759abc064ee2ea4b365099e53d47a338e96819a86457ec1"
+  },
+  "kind": "pluggbox-device-build",
+  "python_version": "3.12.14",
+  "schema_version": 1,
+  "sdk": {
+    "files_sha256": {
+      "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "README.md": "5ed97c2f6605c3d81456db58804543df1c6c30082ffb4007c7052d99f6ac2ceb",
+      "cpu/wl82/tools/cfg/eq_cfg_hw.bin": "41167491bffed4651750719c973d2758adeb9021a5670d02d6a53c85ed80ea7d",
+      "cpu/wl82/tools/cfg_tool.bin": "276579954f076886a6a7694f65dc71c034a63a2c204b76749065c0ac7b010d1b",
+      "cpu/wl82/tools/uboot.boot": "4e3b4c220dc96641cb5a723f41e68ce41d5261ae9434bb33fbd7f2c59976ded4"
+    },
+    "provenance": {
+      "files_sha256": {
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "README.md": "5ed97c2f6605c3d81456db58804543df1c6c30082ffb4007c7052d99f6ac2ceb",
+        "cpu/wl82/tools/cfg/eq_cfg_hw.bin": "41167491bffed4651750719c973d2758adeb9021a5670d02d6a53c85ed80ea7d",
+        "cpu/wl82/tools/cfg_tool.bin": "276579954f076886a6a7694f65dc71c034a63a2c204b76749065c0ac7b010d1b",
+        "cpu/wl82/tools/uboot.boot": "4e3b4c220dc96641cb5a723f41e68ce41d5261ae9434bb33fbd7f2c59976ded4"
+      },
+      "license": "Apache-2.0",
+      "original_vendor_repository": "https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK",
+      "original_vendor_tag": "AC79NN_SDK_V1.2.1_2023-12-13",
+      "source_commit": "aa5875af20e3046ee161f988c5d91d3ae66d0c74",
+      "source_path": "tools/sdk",
+      "source_repository": "https://github.com/Quixotic7/ChoralRootFM1"
+    }
+  },
+  "source": {
+    "dirty": null,
+    "provenance": "unversioned-source-export",
+    "revision": null
+  },
+  "toolchain": {
+    "acquisition_trust": "Verified HTTPS from documented official vendor endpoint; local digest pins acquired bytes, not a vendor signature",
+    "archive_sha256": "a1545cddbc451a06bac43eb5cd96d831470c42a97c5c0b1f98879a20fc7647bd",
+    "archive_size": 26027508,
+    "cached_archive_sha256": "a1545cddbc451a06bac43eb5cd96d831470c42a97c5c0b1f98879a20fc7647bd",
+    "compiler_version": "clang version 4.0.1 () ()\nTarget: x86_64-unknown-linux-gnu\nThread model: posix",
+    "directory": "jieli-linux-toolchains-20260730.1",
+    "executables_sha256": {
+      "common/bin/objcopy": "295151226e28891115c97262e6460a06fe67fc0753858e0df3234eb000ea6e66",
+      "common/bin/objdump": "f7e449e2c8001d5ed4493a45d1f5f304c8910418e4074acdc8715079ef64e08a",
+      "pi32v2/bin/clang": "c45189ee624de0430deb0db02e6dce171fb5538e7fe323e3964dc8ac6236240f",
+      "pi32v2/bin/ld": "fd61aff15616bb6f6b58fd2e9ede7af741c7bf05facb3e0cb3d3c9817c268fd9"
+    },
+    "installed_tree_sha256": "0ae6f6edbff6419adab616106c4ed5eefe12bda255e4447861f03eb83f4a96c3",
+    "resolved_url": "https://jl-update.oss-cn-shenzhen.aliyuncs.com/jieli-linux-toolchains-20260730.1.tar.xz",
+    "source_kind": "official_https",
+    "source_url": "https://pkgman.jieliapp.com/s/linux-toolchain"
+  }
+}

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0a0b18">
+  <meta name="description" content="Pluggbox — a hands-on instrument for glassy melodies, sliding 808s and underground grooves.">
+  <title>Pluggbox · Glass</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <a class="wordmark" href="./" aria-label="Pluggbox home"><span class="logo-glyph" aria-hidden="true">✧</span> plugg<span>box</span><sup>01</sup></a>
+      <div class="edition"><span class="edition-dot"></span> THE GLASS SESSION <b>VOL. 01</b></div>
+    </header>
+
+    <section class="intro">
+      <div><p class="eyebrow">PLUGGNB / UNDERGROUND / YOUR NEXT IDEA</p><h1>Soft glow.<br><span>Heavy low.</span></h1><p class="lede">Glassy keys. Sliding 808s. A pocket of your own.</p></div>
+      <div class="palette-tag"><span class="glass-object" aria-hidden="true"><i></i><i></i><i></i><b>✧</b></span><div><small>STARTING PALETTE / 001</small><strong>GLASS</strong><span>144 BPM <b>·</b> F♯ minor <b>·</b> Four parts</span></div></div>
+    </section>
+
+    <section class="instrument" aria-label="Pluggbox instrument">
+      <div class="transport">
+        <button id="audio-start" class="start-audio">Start audio <span aria-hidden="true">+</span></button>
+        <fieldset id="transport-controls" disabled>
+          <button id="play" class="play" aria-pressed="false"><span aria-hidden="true">▸</span> <span id="play-label">Play beat</span></button>
+          <button id="demo" class="demo" aria-pressed="false"><span aria-hidden="true">✧</span> <span id="demo-label">Hear starter jam</span></button>
+          <label class="tempo">TEMPO <span><input id="tempo" type="number" min="40" max="240" value="144" aria-label="Tempo"> <small>BPM</small></span></label>
+          <label class="swing">SWING <output id="swing-value">0%</output><input id="swing" type="range" min="0" max="100" value="0" aria-label="Swing"></label>
+        </fieldset>
+        <div class="output"><span id="audio-status" role="status">Audio is off</span><meter id="meter" min="0" max="1" value="0" aria-label="Audio output level"></meter></div>
+      </div>
+
+      <fieldset id="instrument-controls" disabled>
+        <div class="session-strip"><p><span class="signal-mark" aria-hidden="true">›</span> Start with a beat, or load the starter jam and play along. <span class="session-note">Your notes return when you leave the starter jam.</span></p><div class="session-actions"><button id="panic" class="quiet">All notes off</button><div class="reset-control"><button id="reset" class="quiet" aria-describedby="reset-hint">Reset palette</button><span id="reset-hint">Reset clears notes and edits.</span></div></div></div>
+        <div class="section-label"><span>01 / THE FOUR PARTS</span><span>Choose a part. Make it yours.</span></div>
+        <div id="parts" class="parts"></div>
+
+        <div class="workbench">
+          <section class="shape">
+            <div class="section-label"><span>02 / FIND THE TEXTURE</span><span id="selected-sound">Glass palette</span></div>
+            <div id="macros" class="macros"></div>
+          </section>
+          <section class="key-settings">
+            <div class="section-label"><span>PLAYING SETTINGS</span><span id="setting-part">Chords</span></div>
+            <div id="melodic-settings" class="settings-grid">
+              <label>Root<select id="root" aria-label="Root note"><option value="0">C</option><option value="1">C♯</option><option value="2">D</option><option value="3">D♯</option><option value="4">E</option><option value="5">F</option><option value="6" selected>F♯</option><option value="7">G</option><option value="8">G♯</option><option value="9">A</option><option value="10">A♯</option><option value="11">B</option></select></label>
+              <label>Scale<select id="scale" aria-label="Scale"><option value="0">Chromatic</option><option value="1">Major</option><option value="2" selected>Minor</option><option value="3">Dorian</option><option value="4">Mixolydian</option><option value="5">Major pentatonic</option><option value="6">Minor pentatonic</option><option value="7">Harmonic minor</option><option value="8">Phrygian</option><option value="9">Lydian</option><option value="10">Locrian</option><option value="11">Melodic minor</option><option value="12">Blues</option><option value="13">Whole tone</option><option value="14">Diminished H/W</option><option value="15">Diminished W/H</option></select></label>
+              <label>Pitch mapping<select id="quant" aria-label="Pitch mapping"><option value="0">Off</option><option value="1" selected>Snap to scale</option><option value="2">White keys → scale</option></select></label>
+              <label>One-key chords<select id="chord" aria-label="One-key chords"><option value="0">Off</option><option value="1">Triad (scale)</option><option value="2" selected>Seventh (scale)</option><option value="3">Ninth (scale)</option><option value="4">Sus 4 (scale)</option><option value="5">Power</option><option value="6">Major</option><option value="7">Minor</option><option value="8">Diminished</option></select></label>
+            </div>
+            <p id="drum-settings" hidden>The pads play the kit’s sixteen drum sounds. Tap a step below to change the groove.</p>
+            <p class="small-note" id="playing-hint">Chords follow the selected scale. These settings belong to the selected part.</p>
+          </section>
+        </div>
+
+        <section class="performance">
+          <div class="section-label"><span>03 / PLAY IT IN</span><div class="octaves"><button id="octave-down" aria-label="Octave down">−</button><span>OCT <output id="octave-value">0</output></span><button id="octave-up" aria-label="Octave up">+</button></div></div>
+          <div id="pads" class="pads" aria-label="Performance pads"></div>
+          <p class="pad-help">Click or touch to play. Computer keys: <b>A–K</b> and <b>Z–,</b> as shown. <kbd>Space</kbd> plays / stops. <kbd>Esc</kbd> releases everything.</p>
+          <div class="capture"><button id="record" aria-pressed="false">● Record Chords</button><p id="record-hint">Capture into a two-bar loop. Grid-snapped overdub.</p></div>
+        </section>
+
+        <section class="groove">
+          <div class="section-label"><span>04 / BUILD THE POCKET</span><span>Two bars · tap steps to edit</span></div>
+          <div class="groove-scroll"><div id="drum-grid" class="drum-grid" aria-label="Drum sequencer"></div></div>
+        </section>
+      </fieldset>
+    </section>
+    <p id="message" class="message" role="status">Start audio to enter the Glass session.</p>
+    <footer><span class="footer-wordmark">PLUGGBOX <b>✧</b> GLASS / 001</span><p>Session only. Reset palette clears your notes and edits.</p><span class="source-links">Built on JamBox / Sloop / Felucca <b>·</b> <a href="../pluggbox-source.tar.gz">Source</a> <a href="../LICENSE.txt">GPL-3.0-only</a></span></footer>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

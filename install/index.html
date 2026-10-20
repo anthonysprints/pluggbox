@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090b17">
+  <meta name="description" content="Play Pluggbox in your browser, hear the Glass palette, and install the experimental Pluggbox build on a supported Jambox FM-1.">
+  <title>Get Pluggbox · Glass</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <a href="../" class="wordmark" aria-label="Pluggbox home"><span aria-hidden="true">✧</span> plugg<b>box</b></a>
+      <span class="edition"><i aria-hidden="true"></i> GLASS / VOL. 01</span>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">GLASSY MELODIES. HEAVY LOWS.</p>
+        <h1 id="page-title">Your next loop<br>starts <em>here.</em></h1>
+        <p class="lede">Sliding 808s, luminous keys, and crisp underground drums.<br class="desktop-break"> Open Pluggbox and make something yours.</p>
+      </div>
+      <div class="glass-art" aria-hidden="true"><div class="orb"><i></i><i></i><i></i><span>✧</span></div><span>144 BPM <b>·</b> F♯ MINOR</span></div>
+    </section>
+
+    <section class="play-card" aria-labelledby="play-title">
+      <div class="card-number" aria-hidden="true">01</div>
+      <div class="play-copy"><p class="eyebrow">THE EASIEST WAY IN</p><h2 id="play-title">Play in your browser.</h2><p>No download, install, or FM-1 needed. Open the instrument, choose <strong>Start audio</strong>, then <strong>Hear starter jam</strong>.</p><p class="small-note">Play, change sounds, and record your own parts. Your browser session is temporary.</p></div>
+      <a id="play-browser" class="primary" href="../play/">Play Pluggbox <span aria-hidden="true">→</span></a>
+    </section>
+
+    <section class="listen-section" aria-labelledby="listen-title">
+      <div class="section-heading"><div><p class="eyebrow">GET A FEEL FOR IT</p><h2 id="listen-title">Just want to listen?</h2></div><p>Two short takes from the same four-part instrument.</p></div>
+      <div class="auditions">
+        <article class="audio-card"><div class="audio-top"><span class="sound-symbol" aria-hidden="true">✧</span><span class="chip">START HERE</span></div><h3>Glass</h3><p>Soft FM keys, a clean sliding 808, and bright little echoes.</p><audio id="audio-glass" controls preload="none" aria-label="Listen to Glass starter jam"><source src="../audio/glass-starter-jam.wav" type="audio/wav">Your browser cannot play this audio. <a href="../audio/glass-starter-jam.wav">Download Glass</a>.</audio></article>
+        <article class="audio-card harder"><div class="audio-top"><span class="sound-symbol" aria-hidden="true">⌁</span><span class="chip">MORE EDGE</span></div><h3>A harder take</h3><p>More driven bass, a hollow lead, and harder-hitting drums.</p><audio id="audio-harder" controls preload="none" aria-label="Listen to the harder Glass variation"><source src="../audio/glass-harder-take.wav" type="audio/wav">Your browser cannot play this audio. <a href="../audio/glass-harder-take.wav">Download harder take</a>.</audio></article>
+      </div>
+    </section>
+
+    <section id="fm1" class="device-card" aria-labelledby="device-title">
+      <div class="device-heading"><div><p class="eyebrow">FOR YOUR INSTRUMENT</p><h2 id="device-title">Pluggbox on your FM-1.</h2></div><span id="release-badge" class="status-badge">IN PREPARATION</span></div>
+      <p id="release-status" class="release-status" role="status">Checking the Pluggbox installer…</p>
+      <p class="device-intro">Check your Jambox first. Installing this experimental Pluggbox build replaces Jambox. Hardware testing is still needed, and Pluggbox sessions are temporary: saving is disabled.</p>
+      <ol class="steps">
+        <li><span>1</span><div><h3>Connect.</h3><p>Use desktop Chrome or Edge and a USB data cable. Close other MIDI apps and FM-1 tabs.</p></div></li>
+        <li><span>2</span><div><h3>Check your Jambox.</h3><p>Allow MIDI access, select its matching ports, then check its firmware below.</p></div></li>
+        <li><span>3</span><div><h3>Install Pluggbox.</h3><p>Keep your Jambox backups. Read the trial notes, then keep power and USB connected through the update.</p></div></li>
+      </ol>
+
+      <div class="device-controls">
+        <button id="connect-device" class="secondary" type="button">Connect FM-1 <span aria-hidden="true">→</span></button>
+        <p id="connection-status" class="connection-status" role="status" aria-live="polite">Connect your FM-1 when you’re ready.</p>
+      </div>
+      <fieldset id="port-fields" hidden disabled>
+        <legend>Choose the matching FM-1 ports</legend>
+        <div class="port-grid"><label for="midi-input">MIDI input<select id="midi-input"><option value="">Choose an input</option></select></label><label for="midi-output">MIDI output<select id="midi-output"><option value="">Choose an output</option></select></label></div>
+        <p id="port-hint" class="small-note">Choose the input and output for the same instrument.</p>
+        <button id="check-device" class="secondary" type="button" disabled>Check my FM-1</button>
+      </fieldset>
+      <div id="device-result" class="device-result" hidden><span class="result-dot" aria-hidden="true"></span><div><h3 id="result-title">Device checked</h3><p id="result-detail"></p></div></div>
+      <button id="firmware-retry" class="secondary" type="button" hidden>Check firmware download again</button>
+      <label class="trial-ack"><input id="trial-ack" type="checkbox" disabled><span>I have kept my Jambox music and recovery backups. I understand this experimental build replaces Jambox, has not been tested on hardware, and Pluggbox sessions cannot be saved.</span></label>
+      <div class="install-gate"><button id="install-device" type="button" disabled>Install Pluggbox</button><p id="install-hint">The install button will become available with a verified Pluggbox device build.</p></div>
+      <p class="device-note">Only the supported Jambox build can start this trial. Checking your device does not make a backup. This page does not install from factory firmware, an update loader, or rescue mode.</p>
+      <section id="install-progress" class="install-progress" hidden aria-labelledby="progress-stage">
+        <h3 id="progress-stage" tabindex="-1">Checking your FM-1.</h3><p id="progress-detail" role="status" aria-live="polite"></p>
+        <ol id="stage-list"><li id="stage-check" data-state="waiting">Check Jambox</li><li id="stage-loader" data-state="waiting">Prepare loader</li><li id="stage-write" data-state="waiting">Write Pluggbox</li><li id="stage-return" data-state="waiting">Confirm instrument</li></ol>
+      </section>
+      <section id="install-result" class="install-result" hidden aria-labelledby="install-result-title">
+        <h3 id="install-result-title" tabindex="-1"></h3><p id="install-result-detail"></p>
+        <button id="download-report" class="secondary" type="button">Download installation report</button>
+        <details><summary>View report</summary><pre id="report-details"></pre></details>
+      </section>
+    </section>
+
+    <footer><span>PLUGGBOX <b>✧</b> GLASS / 001</span><div><a href="../pluggbox-source.tar.gz">Source</a><a href="../LICENSE.txt">License</a><a href="../play/">Open instrument</a></div><p>Built on JamBox / Sloop / Felucca.</p></footer>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

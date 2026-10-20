@@ -1,0 +1,32 @@
+{
+  "wasmSha256": "cec9c5367944b31814817f089a1bdaf6f9e8765186d7b480a9e68d3ec0fa9a92",
+  "rendererSha256": "5f697170fc42e168a3fe5a65ff22e06d96f010e5d053992c1d5f1e519ef1a3f8",
+  "sampleRate": 44100,
+  "outputGain": 0.6,
+  "renders": [
+    {
+      "file": "glass-starter-jam.wav",
+      "seconds": 16.333333333333332,
+      "peak": 0.275079345703125,
+      "rms": 0.06688492331365542,
+      "clippedSamples": 0,
+      "kind": "four-part-demo",
+      "variant": 0,
+      "bpm": 144,
+      "scale": "F# minor",
+      "loops": 4
+    },
+    {
+      "file": "glass-harder-take.wav",
+      "seconds": 16.333333333333332,
+      "peak": 0.2224365234375,
+      "rms": 0.04224266558166799,
+      "clippedSamples": 0,
+      "kind": "four-part-demo",
+      "variant": 1,
+      "bpm": 144,
+      "scale": "F# minor",
+      "loops": 4
+    }
+  ]
+}
